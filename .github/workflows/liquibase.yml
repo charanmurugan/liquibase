@@ -22,22 +22,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Install Liquibase
-      run: |
-        curl -sL https://download.liquibase.com/install.sh | bash
-        liquibase --version
-
-    - name: Set up database credentials
+    - name: Run Liquibase with Docker
       env:
         DB_URL: ${{ secrets.DB_URL }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
-        echo "DB_URL=${DB_URL}" > .env
-        echo "DB_USERNAME=${DB_USERNAME}" >> .env
-        echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
-
-    - name: Run Liquibase update
-      run: |
-          liquibase --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD --changeLogFile=src/main/resources/db/changelog/master.xml update
-
+        docker run --rm -v $(pwd):/liquibase/changelog liquibase/liquibase:latest \
+        --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD \
+        --changeLogFile=src/main/resources/db/changelog/master.xml update
