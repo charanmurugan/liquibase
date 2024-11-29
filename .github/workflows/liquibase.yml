@@ -1,0 +1,45 @@
+name: Liquibase CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger this pipeline on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger for pull requests to the main branch
+
+jobs:
+  liquibase:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Print working directory
+      run: pwd
+
+    - name: List all files in current directory
+      run: |
+        ls -R
+    - name: Find changelog file
+      run: find . -name master.xml
+
+    - name: Print environment variables
+      run: env
+    - name: Run Liquibase with Docker
+      env:
+        DB_URL: ${{ secrets.DB_URL }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      run: |
+        docker run --rm -v $(pwd):$(pwd) -w $(pwd) liquibase/liquibase:latest \
+        --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD \
+        --changeLogFile=src/main/resources/db/changelog/master.xml update
+

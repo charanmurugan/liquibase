@@ -3,9 +3,9 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:postgresql://dpg-ct4u7shopnds73d4dkk0-a.oregon-postgres.render.com:5432/liquibase_i99u
+    url: jdbc:postgresql://dpg-ct4vlj3qf0us73844750-a.oregon-postgres.render.com:5432/liquibase_i9rz
     driver-class-name: org.postgresql.Driver
     username: charan
-    password: xiHWSYuwuBf6BA8PJNUtb76GH7CZJAGU
+    password: eChfqpQtXfWSlxW8YMfg6TRG3Asck30v
   liquibase:
     change-log: classpath:db/changelog/master.xml
