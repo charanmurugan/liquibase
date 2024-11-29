@@ -33,12 +33,12 @@ jobs:
 
     - name: Print environment variables
       run: env
-    - name: Run Liquibase in debug mode
+    - name: Run Liquibase with Docker
       env:
         DB_URL: ${{ secrets.DB_URL }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
-        liquibase --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD \
-        --changeLogFile=src/main/resources/db/changelog/master.xml \
-        --logLevel=debug update
+        docker run --rm -v $(pwd):/liquibase/changelog liquibase/liquibase:latest \
+        --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD \
+        --changeLogFile=./src/main/resources/db/changelog/master.xml update
