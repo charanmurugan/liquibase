@@ -10,24 +10,22 @@ on:
 
 jobs:
   liquibase:
-    runs-on: ubuntu-latest  # You can change the OS based on your preference
-    
+    runs-on: ubuntu-latest
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up JDK (if using Maven/Gradle)
+    - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '17'  # Adjust Java version as per your setup
-        distribution: 'temurin'  # Use temurin for OpenJDK 17
+        java-version: '17'
+        distribution: 'temurin'
 
     - name: Install Liquibase
       run: |
-        curl -L https://github.com/liquibase/liquibase/releases/download/v4.24.0/liquibase-4.24.0-linux-x86_64.tar.gz -o liquibase.tar.gz
-        tar -xvzf liquibase.tar.gz
-        sudo mv liquibase /usr/local/bin/
-             liquibase --version  # Verifying installation
+        curl -sL https://download.liquibase.com/install.sh | bash
+        liquibase --version
 
     - name: Set up database credentials
       env:
