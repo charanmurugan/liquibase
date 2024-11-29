@@ -11,35 +11,35 @@ on:
 jobs:
   liquibase:
     runs-on: ubuntu-latest  # You can change the OS based on your preference
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up JDK (if using Maven/Gradle)
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'  # Adjust Java version as per your setup
-          distribution: 'temurin'
+    - name: Set up JDK (if using Maven/Gradle)
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'  # Adjust Java version as per your setup
+        distribution: 'temurin'  # Use temurin for OpenJDK 17
 
-      - name: Install Liquibase
-        run: |
-          curl -L https://github.com/liquibase/liquibase/releases/download/v4.24.0/liquibase-4.24.0-linux-x86_64.tar.gz -o liquibase.tar.gz
-          tar -xvzf liquibase.tar.gz
-          sudo mv liquibase /usr/local/bin/
-          liquibase --version  # Verifying installation
+    - name: Install Liquibase
+      run: |
+        curl -L https://github.com/liquibase/liquibase/releases/download/v4.24.0/liquibase-4.24.0-linux-x86_64.tar.gz -o liquibase.tar.gz
+        tar -xvzf liquibase.tar.gz
+        sudo mv liquibase /usr/local/bin/
+             liquibase --version  # Verifying installation
 
-      - name: Set up database credentials
-        env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: |
-          echo "DB_URL=${DB_URL}" > .env
-          echo "DB_USERNAME=${DB_USERNAME}" >> .env
-          echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+    - name: Set up database credentials
+      env:
+        DB_URL: ${{ secrets.DB_URL }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      run: |
+        echo "DB_URL=${DB_URL}" > .env
+        echo "DB_USERNAME=${DB_USERNAME}" >> .env
+        echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
 
-      - name: Run Liquibase update
-        run: |
+    - name: Run Liquibase update
+      run: |
           liquibase --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD --changeLogFile=src/main/resources/db/changelog/master.xml update
 
