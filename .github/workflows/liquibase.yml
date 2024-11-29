@@ -39,6 +39,6 @@ jobs:
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
-        docker run --rm -v  liquibase/liquibase:latest \
+        docker run --rm -v $(pwd) liquibase/liquibase:latest \
         --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD \
-        --changeLogFile=src/main/resources/db/changelog/master.xml update
+        --changeLogFile=./src/main/resources/db/changelog/master.xml update
