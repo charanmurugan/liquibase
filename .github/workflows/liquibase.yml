@@ -21,19 +21,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        
-    - name: Print working directory
-      run: pwd
-
-    - name: List all files in current directory
-      run: |
-        ls -R
-
-    - name: Find changelog file
-      run: find . -name master.xml
-
-    - name: Print environment variables
-      run: env
 
     - name: Run Liquibase with Docker
       env:
@@ -43,4 +30,4 @@ jobs:
       run: |
         docker run --rm -v $(pwd):/liquibase/changelog liquibase/liquibase:latest \
         --url=$DB_URL --username=$DB_USERNAME --password=$DB_PASSWORD \
-        --changeLogFile=/src/main/resources/db/changelog/master.xml update
+        --changeLogFile=./src/main/resources/db/changelog/master.xml update
