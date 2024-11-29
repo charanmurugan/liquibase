@@ -8,5 +8,5 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <include file="src/main/resources/db/changelog/changeset/initial-commit.xml" />
     <include file="src/main/resources/db/changelog/changeset/alterUserTable.xml" />
     <include file="src/main/resources/db/changelog/changeset/insertUser.xml"/>
-    
+    <include file="src/main/resources/db/changelog/changeset/addUser.xml"/>
 </databaseChangeLog>
